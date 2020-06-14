@@ -82,7 +82,7 @@ app.use('/api', limiter);
 // HAS to be before JSON parsing
 app.post(
     '/submit',
-    multer().none(),
+    multer().any(),
     // express.raw({ type: 'multipart/form-data' }),
     emailController.incomingEmail
 );
