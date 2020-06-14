@@ -6,6 +6,8 @@ const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
+const multer = require('multer');
+const shortid = require('shortid');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
@@ -21,7 +23,6 @@ const emailController = require('././controllers/emailController');
 // const viewRouter = require('./routes/viewRoutes');
 const globalErrorHandler = require('./controllers/errorController');
 const AppError = require('./utils/appError');
-const multer = require('multer');
 
 const app = express();
 app.enable('trust proxy');
@@ -79,10 +80,19 @@ const limiter = rateLimit({
 // Limit requests from IP
 app.use('/api', limiter);
 
+const storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, `${__dirname}/public/uploads`);
+    },
+    filename: function(req, file, cb) {
+        cb(null, `${shortid.generate()}-${Date.now()}-${file.originalname}`); //Appending .jpg
+    }
+});
+
 // HAS to be before JSON parsing
 app.post(
     '/submit',
-    multer().any(),
+    multer({ storage }).any(),
     // express.raw({ type: 'multipart/form-data' }),
     emailController.incomingEmail
 );
