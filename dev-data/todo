@@ -1,0 +1,38 @@
+What To Do that Jonas missed:
+        done - adding or operators to url query api
+        done - adding api documentation for every api version
+        done - fix broken alias 
+        done - give people a way to restore their deleted account
+    - filling documentation
+    - templating documentation
+    - creative 404
+    - building a welcome screen with a gmail like registration popup
+    - multilanguages
+        done - adding an admin portal for creating new tours
+    - adding feature upload user photo and use it
+    - adding specific color or theme to every tour: green, pink, yellow, red, blue
+        done - adding possibility to review tours, see your reviews, 
+    todo        only if you bought them
+    - adding feature to see booked tours, and billing + unbook a tour and terms and policy
+    - adding links to bottom menu, become a guide, about us, download apps etc...
+    - adding search and filtering buttons for tours
+    - learning about advanced stuff like streaming etc...
+        done - learning about advanced stuff like cookies
+        done - learn how to have a property on mongoose used in another property automatically
+        done - factory handler
+    - fix bugs:
+        done - add reviews propely'
+        done - test all the endpoints
+        done - fix limitng fields bug
+    - add search and filter for tours
+    - when a tour date passes delete this tour date and rearrange the tour dates array
+    - use webpack to bundle scripts
+    - implement signup from existing templates
+        done - fix section pictures
+    - maps and style for maps offline
+        done - add one day to the display duration on profile pages for tours
+    - implement website for password reset
+    - add stripe subscriptions for getting three free tours every year for example
+    - add analytics and statistics
+    - manage tours, see bookings, review and manage users, get refunded for cancellations
+    - restrict review only for purchased tours

@@ -1,0 +1,85 @@
+{
+    "title": "Api Documentation 👍",
+    "versions": {
+        "1": {
+            "tours": {
+                "getAll": "To access all tours send request to '/api/v1/tours' using GET method",
+                "getById": "To access a certain tour by its ID, add the ID as a new slash '/api/v1/tours/:id' using GET method",
+                
+                "getClose": "To find tours around you, GET 'api/v1/tours/within/:distance/center/:latlng/unit/:unit'",
+                "getDistance": "To find distance to tours, GET 'api/v1/tours/distances/:latlng/unit/:unit'",
+
+                "getFiltered-1": "To access all tours matching a certain query where properties equal other properties send request to '/api/v1/tours' using GET method and add your query at the end starting with a question mark and then key value pairs: '?key=value&price=997'",
+                "getFiltered-2": "To access all tours matching a certain query where properties relate to other properties send request to '/api/v1/tours' using GET method and add your advanced query at the end starting with a question mark and then key value pairs with the right operator in square brackets: '?key=value&price[gt]=997', your options are: (NO_BRACKETS - equals =), (gt - greater than >), (lt - less than <), (gte - greater than or equals >=), (lte - less than or equals <=)",
+                "getFiltered-3": "To access all tours matching a certain mongoose query send request to '/api/v1/tours' using GET method and add your mongoose advanced query as a body element attached to the request and specify a new property with the key 'query' and the value 1, before sending, omit all mongoose operators ('$'). To learn more about how to build a mongoose query go to 'www.mongoosejs.com/docs' to get help.",
+                
+                "sort": "Create a query like in 'getFiltered-2', if you already have a query add the key 'sort', and then the property you want to sort by, if you want to add more properties to sort by, add them separated by commas, if you want to sort descendingly by a property, add a minus sign before the property",
+                "fields": "If you want to get only specific fields, create a query like in 'getFiltered-2', if you already have a query just add the key 'fields', and then the property you want to get, if you want to add more properties, add them separated by commas, if you want to exclude fields instead by a property add a minus sign before the properties",
+                
+                "pagination": "The default behavior of the api is to send only the first 100 results, you can manipulate it though. If you want to get only a limited number of documents, create a query like in 'getFiltered-2', if you already have a query add the key 'page', and then the page you want to get (each page contains 100 results by default). If you want to change the number of results you get per page, add the number to the property 'limit'",
+
+                "create": "To create a new tour send request to '/api/v1/tours' using the POST method, send along a JSON object in body with new properties for object",
+                "update": "To update a certain tour send request to '/api/v1/tours', specify the id in a new slash and use the PATCH method, send along a JSON object in body with new properties for object. You can also upload up to 3 images to 'images' and 1 image to 'imageCover', as form data",
+                "delete": "To delete a certain tour send request to '/api/v1/tours', specify the id in a new slash and use the DELETE method",
+                
+                "aggregate": "To access tours statistics send request to '/api/v1/tours/stats' using GET method, add your JSON aggregation array as a request.body.stages! For more information about aggregation object go to MongoDB and Mongoose documentations online."
+            },
+            "security": {
+                "principle": "Some routes are protected or restricted, if the route is protected, get a JWT ans send it along with your request as a Bearer Token. If the route is restricted, get promoted to another role...",
+
+                "signup": "Send a POST request to '/api/v1/users/signup' with your name, valid email, a password, and passwordConfirm in the body of the request, your new user will be automatically signed in and will get a login token",
+                "login": "Send a POST request to '/api/v1/users/login' with your email and password in the body of the request, your user will be automatically signed in and will get a login token",
+
+                "forgotPassword": "Send a POST request to '/api/v1/users/forgotPassword' with your email in the body of the request, a reset token will be sent to your email, go check your email and follow the instructions. (send the url PATCH to the server, with a password and passwordConfirm and you will be signed in)",
+                "updatePassword": "Send a PATCH request to 'api/v1/users/updatePassword' with your email, oldPassword, newPassword and newPasswordConfirm and you will be automatically signed in and will get a new token",
+                
+                "updateInformationAboutYourself": "Send a PATCH request to 'api/v1/users/updateInfo' with your new information in the body. You can also upload a new 'photo' as form data or simply set photo to '' to remove your photo...",
+                
+                "deleteYourAccount": "Send a DELETE request to 'api/v1/users/deleteMe'",
+                "restoreYourAcount": "Log In again",
+
+                "getPromoted": "Send a PATCH request to 'api/v1/users/promote' with your email, newRole, adminEmail and adminPassword and you will get promoted to the role"
+            },
+            "users": {
+                "getAll": "To access all users send request to '/api/v1/users' using GET method",
+                "getById": "To access a certain user by their ID, add the ID as a new slash '/api/v1/users/:id' using GET method",
+                
+                "getMyInfo": "To access your user information, go to '/api/v1/users/me' using GET method",
+
+                "getFiltered-1": "To access all users matching a certain query where properties equal other properties send request to '/api/v1/users' using GET method and add your query at the end starting with a question mark and then key value pairs: '?key=value&price=997'",
+                "getFiltered-2": "To access all users matching a certain query where properties relate to other properties send request to '/api/v1/users' using GET method and add your advanced query at the end starting with a question mark and then key value pairs with the right operator in square brackets: '?key=value&price[gt]=997', your options are: (NO_BRACKETS - equals =), (gt - greater than >), (lt - less than <), (gte - greater than or equals >=), (lte - less than or equals <=)",
+                "getFiltered-3": "To access all users matching a certain mongoose query send request to '/api/v1/users' using GET method and add your mongoose advanced query as a body element attached to the request and specify a new property with the key 'query' and the value 1, before sending, omit all mongoose operators ('$'). To learn more about how to build a mongoose query go to 'www.mongoosejs.com/docs' to get help.",
+
+                "sort": "Create a query like in 'getFiltered-2', if you already have a query add the key 'sort', and then the property you want to sort by, if you want to add more properties to sort by, add them separated by commas, if you want to sort descendingly by a property, add a minus sign before the property",
+                "fields": "If you want to get only specific fields, create a query like in 'getFiltered-2', if you already have a query just add the key 'fields', and then the property you want to get, if you want to add more properties, add them separated by commas, if you want to exclude fields instead by a property add a minus sign before the properties",
+                "pagination": "The default behavior of the api is to send only the first 100 results, you can manipulate it though. If you want to get only a limited number of documents, create a query like in 'getFiltered-2', if you already have a query add the key 'page', and then the page you want to get (each page contains 100 results by default). If you want to change the number of results you get per page, add the number to the property 'limit'",
+
+                "create": "To create a new user send request to '/api/v1/users' using the POST method, send along a JSON object in body with new properties for object",
+                "update": "To update a certain user send request to '/api/v1/users', specify the id in a new slash and use the PATCH method, send along a JSON object in body with new properties for object",
+                "delete": "To delete a certain user send request to '/api/v1/users', specify the id in a new slash and use the DELETE method",
+
+                "aggregate": "To access users statistics send request to '/api/v1/users/stats' using GET method, add your JSON aggregation array as a request.body.stages! For more information about aggregation object go to MongoDB and Mongoose documentations online."
+            },
+            "reviews": {
+                "basics": "You can either go to /api/v1/reviews (Solution A) or to /api/v1/tours/:tourId/reviews (Solution B) to achieve the same result for a specific tour",
+
+                "getAll": "To access all reviews send request to '/api/v1/reviews' using GET method",
+                "getById": "To access a certain review by its ID, add the ID as a new slash '/api/v1/reviews/:id' using GET method",
+
+                "getFiltered-1": "To access all reviews matching a certain query where properties equal other properties send request to '/api/v1/reviews' using GET method and add your query at the end starting with a question mark and then key value pairs: '?key=value&price=997'",
+                "getFiltered-2": "To access all reviews matching a certain query where properties relate to other properties send request to '/api/v1/reviews' using GET method and add your advanced query at the end starting with a question mark and then key value pairs with the right operator in square brackets: '?key=value&price[gt]=997', your options are: (NO_BRACKETS - equals =), (gt - greater than >), (lt - less than <), (gte - greater than or equals >=), (lte - less than or equals <=)",
+                "getFiltered-3": "To access all reviews matching a certain mongoose query send request to '/api/v1/reviews' using GET method and add your mongoose advanced query as a body element attached to the request and specify a new property with the key 'query' and the value 1, before sending, omit all mongoose operators ('$'). To learn more about how to build a mongoose query go to 'www.mongoosejs.com/docs' to get help.",
+
+                "sort": "Create a query like in 'getFiltered-2', if you already have a query add the key 'sort', and then the property you want to sort by, if you want to add more properties to sort by, add them separated by commas, if you want to sort descendingly by a property, add a minus sign before the property",
+                "fields": "If you want to get only specific fields, create a query like in 'getFiltered-2', if you already have a query just add the key 'fields', and then the property you want to get, if you want to add more properties, add them separated by commas, if you want to exclude fields instead by a property add a minus sign before the properties",
+                "pagination": "The default behavior of the api is to send only the first 100 results, you can manipulate it though. If you want to get only a limited number of documents, create a query like in 'getFiltered-2', if you already have a query add the key 'page', and then the page you want to get (each page contains 100 results by default). If you want to change the number of results you get per page, add the number to the property 'limit'",
+
+                "create": "To create a new review send request to '/api/v1/reviews' using the POST method, send along a JSON object in body with new properties for object",
+                "update": "To update a certain review send request to '/api/v1/reviews', specify the id in a new slash and use the PATCH method, send along a JSON object in body with new properties for object",
+                "delete": "To delete a certain review send request to '/api/v1/reviews', specify the id in a new slash and use the DELETE method",
+
+                "aggregate": "To access reviews statistics send request to '/api/v1/reviews/stats' using GET method, add your JSON aggregation array as a request.body.stages! For more information about aggregation object go to MongoDB and Mongoose documentations online."
+            }
+        }
+    }
+}
