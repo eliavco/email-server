@@ -2,6 +2,7 @@ const stripe = require('stripe');
 const Tour = require('../models/tourModel');
 const User = require('../models/userModel');
 const Booking = require('../models/bookingModel');
+const Email = require('../models/emailModel');
 const factory = require('./factoryGenerator');
 // const AppError = require('./../utils/appError');
 const catchAsync = require('../utils/catchAsync');
@@ -69,24 +70,14 @@ const createBookingCheckout = catchAsync(async session => {
     await Booking.create({ tour, user, price });
 });
 
-exports.incomingEmail = (req, res, next) => {
-    // const signature = req.headers['stripe-signature'];
-    // let event;
-    // try {
-    //     event = stripe.webhooks.constructEvent(
-    //         req.body,
-    //         signature,
-    //         process.env.STRIPE_SECRET_WEBHOOK
-    //     );
-    // } catch (err) {
-    //     return res.status(400).send(`Webhook error: ${err.message}`);
-    // }
-
-    // if (event.type === 'checkout.session.completed')
-    //     createBookingCheckout(event.data.object);
-    console.log(req.body);
-    console.log(req.files);
-    res.status(200).json({ received: true });
+exports.incomingEmail = async (req, res, next) => {
+    req.body.files = JSON.stringify(req.files);
+    try {
+        await Email.create(req.body);
+        res.status(200).json({ received: true });
+    } catch (err) {
+        res.status(500).json({ received: false });
+    }
 };
 
 exports.getAllBookings = factory.getAll(Booking);
