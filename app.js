@@ -10,17 +10,18 @@ const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
 const cors = require('cors');
-// const rateLimit = require('express-rate-limit');
+const rateLimit = require('express-rate-limit');
 const apiDocRouter = require('./routes/apiDocRoutes');
 // const rewriteDocs = require('./dev-data/data/import-dev-data-docs');
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
 const bookingRouter = require('./routes/bookingRoutes');
-const bookingController = require('./controllers/bookingController');
-const viewRouter = require('./routes/viewRoutes');
+const emailController = require('././controllers/emailController');
+// const viewRouter = require('./routes/viewRoutes');
 const globalErrorHandler = require('./controllers/errorController');
 const AppError = require('./utils/appError');
+const multer = require('multer');
 
 const app = express();
 app.enable('trust proxy');
@@ -37,10 +38,10 @@ app.use(cors());
 app.options('*', cors());
 // app.options('/api/v1/tours', cors());
 
-app.set('view engine', 'pug');
-app.set('views', path.join(__dirname, 'views'));
+// app.set('view engine', 'html');
+// app.set('views', path.join(__dirname, 'views'));
 
-// app.use(express.static(`${__dirname}/public`));
+app.use(express.static(`${__dirname}/public`));
 
 //         src: './public/css/sass/style.scss',
 //         dest: './public/css/style.css',
@@ -63,32 +64,33 @@ if (process.env.NODE_ENV !== 'production') app.use(morgan('dev'));
 
 // rewriteDocs.rewriteData();
 
-/*const limiter = rateLimit({
+const limiter = rateLimit({
     max: 100,
     windowMs: 60 * 60 * 1000,
     message: {
         status: 'error',
         message: 'Too many requests, please try again later'
     },
-    handler: function(req, res , next) {
+    handler: function(req, res, next) {
         res.status(this.statusCode).json(this.message);
     }
-});*/
+});
 
 // Limit requests from IP
-// app.use('/api', limiter);
+app.use('/api', limiter);
 
 // HAS to be before JSON parsing
 app.post(
-    '/webhook-checkout',
-    express.raw({ type: 'application/json' }),
-    bookingController.webhookCheckout
+    '/submit',
+    multer().none(),
+    // express.raw({ type: 'multipart/form-data' }),
+    emailController.incomingEmail
 );
 
 // JSON DECODING
 app.use(
     express.json({
-        limit: '10kb'
+        limit: '120kb'
     })
 );
 
@@ -96,7 +98,7 @@ app.use(
 app.use(
     express.urlencoded({
         extended: true,
-        limit: '10kb'
+        limit: '120kb'
     })
 );
 
@@ -108,14 +110,7 @@ app.use('api/v1/users/signup', mongoSanitize());
 app.use(xss());
 app.use(
     hpp({
-        whitelist: [
-            'duration',
-            'ratingsQuantity',
-            'ratingsAverage',
-            'maxGroupSize',
-            'difficulty',
-            'price'
-        ]
+        whitelist: []
     })
 );
 
@@ -143,11 +138,11 @@ app.use(`/api/v${apiVersion}/reviews`, reviewRouter);
 app.use(`/api/v${apiVersion}/bookings`, bookingRouter);
 app.use('/api', apiDocRouter);
 
-app.all(`/api/*`, (req, res, next) => {
-    next(new AppError(`The URL path ${req.originalUrl} was not found`, 404));
-});
+// app.all(`/api/*`, (req, res, next) => {
+//     next(new AppError(`The URL path ${req.originalUrl} was not found`, 404));
+// });
 
-app.use('/', viewRouter);
+// app.use('/', viewRouter);
 app.all(`/*`, (req, res, next) => {
     next(new AppError(`The URL path ${req.originalUrl} was not found`, 404));
 });

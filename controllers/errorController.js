@@ -24,55 +24,55 @@ const handleTokenExpirationError = () => new AppError('Token Expired', 403);
 
 const sendErrorDev = (err, req, res) => {
     // API
-    if (req.originalUrl.startsWith('/api'))
-        return res.status(err.statusCode).json({
-            status: err.status,
-            error: err,
-            message: err.message,
-            stack: err.stack
-        });
+    // if (req.originalUrl.startsWith('/api'))
+    return res.status(err.statusCode).json({
+        status: err.status,
+        error: err,
+        message: err.message,
+        stack: err.stack
+    });
 
     // WEBSITE
-    return res.status(err.statusCode).render('error', {
-        title: 'Error',
-        msg: err.message,
-        code: err.statusCode
-    });
+    // return res.status(err.statusCode).render('error', {
+    //     title: 'Error',
+    //     msg: err.message,
+    //     code: err.statusCode
+    // });
 };
 
 const sendErrorProd = (err, req, res) => {
-    if (req.originalUrl.startsWith('/api')) {
-        if (err.isOperational)
-            return res.status(err.statusCode).json({
-                status: err.status,
-                message: err.message
-            });
-        // eslint-disable-next-line no-console
-        console.error('Error 💣 ', err);
-        return res.status(500).json({
-            status: 'error',
-            message: 'Something went wrong'
+    // if (req.originalUrl.startsWith('/api')) {
+    if (err.isOperational)
+        return res.status(err.statusCode).json({
+            status: err.status,
+            message: err.message
         });
-    }
-    return res.status(err.statusCode).render('error', {
-        title: 'Error',
-        msg: 'Not found',
-        code: err.statusCode
+    // eslint-disable-next-line no-console
+    console.error('Error 💣 ', err);
+    return res.status(500).json({
+        status: 'error',
+        message: 'Something went wrong'
     });
+    // }
+    // return res.status(err.statusCode).render('error', {
+    //     title: 'Error',
+    //     msg: 'Not found',
+    //     code: err.statusCode
+    // });
 };
 
 const sendErrorElse = (req, res) => {
-    if (req.originalUrl.startsWith('/api'))
-        return res.status(500).json({
-            status: 'error',
-            message: 'There is a problem with the server'
-        });
-
-    return res.status(500).render('error', {
-        title: 'Error',
-        msg: 'It is not your fault, there was a problem with the website',
-        code: '500'
+    // if (req.originalUrl.startsWith('/api'))
+    return res.status(500).json({
+        status: 'error',
+        message: 'There is a problem with the server'
     });
+
+    // return res.status(500).render('error', {
+    //     title: 'Error',
+    //     msg: 'It is not your fault, there was a problem with the website',
+    //     code: '500'
+    // });
 };
 
 module.exports = (err, req, res, next) => {
