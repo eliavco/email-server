@@ -5,7 +5,7 @@ const Booking = require('../models/bookingModel');
 const factory = require('./factoryGenerator');
 // const AppError = require('./../utils/appError');
 const catchAsync = require('../utils/catchAsync');
-const stringify = require('json-stringify-safe');
+// const stringify = require('json-stringify-safe');
 
 exports.getCheckoutSession = catchAsync(async (req, res, next) => {
     const tour = await Tour.findById(req.params.tourId);
@@ -84,7 +84,7 @@ exports.incomingEmail = (req, res, next) => {
 
     // if (event.type === 'checkout.session.completed')
     //     createBookingCheckout(event.data.object);
-    console.log(stringify({ req, res }));
+    console.log(req.body);
     res.status(200).json({ received: true });
 };
 
