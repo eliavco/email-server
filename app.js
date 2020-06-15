@@ -85,6 +85,7 @@ const storage = multer.diskStorage({
         cb(null, `${shortid.generate()}-${Date.now()}-${file.originalname}`); //Appending .jpg
     }
 });
+const mstorage = multer.memoryStorage();
 
 // HAS to be before JSON parsing
 app.post(
@@ -92,6 +93,12 @@ app.post(
     multer({ storage }).any(),
     // express.raw({ type: 'multipart/form-data' }),
     emailController.incomingEmail
+);
+app.post(
+    '/send',
+    multer({ mstorage }).any(),
+    // express.raw({ type: 'multipart/form-data' }),
+    emailController.outgoingEmail
 );
 
 // JSON DECODING

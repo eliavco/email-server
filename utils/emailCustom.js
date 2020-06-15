@@ -6,51 +6,94 @@ const emailHostConfig = require('./emailHostConfig');
 module.exports = class EmailCustom {
     /*** Use this with the methods createTransporter or send for custom emails and sendWelcome for welcome emails* @param {object} user* @param {string} url*/
 
-    constructor(user, url) {
-        this.to = user.email;
-        this.firstName = user.name.split(' ')[0];
-        this.url = url;
-        this.from = `${process.env.EMAIL_FROM_FIRSTNAME} ${process.env.EMAIL_FROM_LASTNAME} <${process.env.EMAIL_FROM}>`;
+    constructor(subject, html) {
+        this.subject = subject;
+        this.html = html;
+        this.text = htmlToText.fromString(html);
         this.serverSettings = emailHostConfig;
+        this.attachments = [];
         this.transporter = nodemailer.createTransport(
             smtpTransport(this.serverSettings(process))
         );
+    }
+
+    addSender(name, from) {
+        this.name = name;
+        this.from = from;
+        return this;
+    }
+
+    addRecipients(to) {
+        to = `${this.from},${to}`;
+        this.to = to;
+        return this;
+    }
+
+    addCopies(cc) {
+        this.cc = cc;
+        return this;
+    }
+
+    addHiddenCopies(bcc) {
+        this.bcc = bcc;
+        return this;
+    }
+
+    addHeaders(headers) {
+        this.headers = headers;
+        return this;
+    }
+
+    addCalendar(filename, ical) {
+        this.icalEvent = {
+            filename,
+            method: 'request',
+            content: ical
+        };
+        return this;
+    }
+
+    addIcsCalendar(filename, ical) {
+        return this.addCalendar(`${filename}.ics`, ical);
+    }
+
+    addAttachment(filename, content) {
+        this.attachments.push({
+            filename,
+            content
+        });
+        return this;
+    }
+
+    addEmbedded(filename, content, reference) {
+        this.attachments.push({
+            filename,
+            content,
+            cid: reference
+        });
+        return this;
     }
 
     newTransporter() {
         return this.transporter;
     }
 
-    async send(template, subject) {
+    async send() {
         /*** @param {string} template* @param {string} subject*/
 
-        const html =
-            // pug.renderFile(`${__dirname}/../views/email/${template}.pug`, {
-            //     firstName: this.firstName,
-            //     url: this.url,
-            //     subject
-            // }) ||
-            '';
-
         const mailOptions = {
-            from: this.from,
+            from: `${this.name} <${this.from}>`,
             to: this.to,
-            subject,
-            html,
-            text: htmlToText.fromString(html)
+            cc: this.cc,
+            bcc: this.bcc,
+            headers: this.headers,
+            subject: this.subject,
+            html: this.html,
+            text: this.text,
+            attachments: this.attachments,
+            icalEvent: this.icalEvent
         };
 
         await this.transporter.sendMail(mailOptions);
-    }
-
-    async sendWelcome() {
-        return await this.send('welcome', 'Welcome to the Natours Family!');
-    }
-
-    async sendPasswordReset() {
-        return await this.send(
-            'passwordReset',
-            'Your password reset token (valid for 10 minutes)'
-        );
     }
 };

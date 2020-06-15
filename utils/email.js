@@ -44,7 +44,7 @@ module.exports = class Email {
     }
 
     async sendWelcome() {
-        return await this.send('welcome', 'Welcome to the Natours Family!');
+        return await this.send('welcome', 'Welcome to the Email Cohen Family!');
     }
 
     async sendPasswordReset() {
