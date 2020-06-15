@@ -74,8 +74,7 @@ const userSchema = new mongoose.Schema({
     subscriptions: [
         {
             type: String,
-            minLength: [1, "Can't be empty"],
-            unique: true
+            minLength: [1, "Can't be empty"]
         }
     ],
     passwordChangedAt: Date,
