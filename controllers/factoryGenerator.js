@@ -14,12 +14,14 @@ exports.getAll = Model =>
             Model.find(),
             req.body,
             req.query,
+            req.usersSubscribed,
             Model
         )
             .filter()
             .sort()
             .limitFields()
-            .paginate();
+            .paginate()
+            .onlySubscribed();
 
         const documents = await features.query;
         // const documents = await features.query.explain();

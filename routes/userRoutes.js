@@ -39,6 +39,8 @@ router
     .route('/stats')
     .get(protect, restrict('admin', 'lead-guide'), userController.getStats);
 
+router.route('/sub').patch(protect, userController.addSubscription);
+
 router
     .route('/:id')
     .get(protect, restrict('admin', 'lead-guide'), userController.getUser)

@@ -15,12 +15,9 @@ const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 const apiDocRouter = require('./routes/apiDocRoutes');
 // const rewriteDocs = require('./dev-data/data/import-dev-data-docs');
-const tourRouter = require('./routes/tourRoutes');
+const emailRouter = require('./routes/emailRoutes');
 const userRouter = require('./routes/userRoutes');
-const reviewRouter = require('./routes/reviewRoutes');
-const bookingRouter = require('./routes/bookingRoutes');
 const emailController = require('././controllers/emailController');
-// const viewRouter = require('./routes/viewRoutes');
 const globalErrorHandler = require('./controllers/errorController');
 const AppError = require('./utils/appError');
 
@@ -139,20 +136,13 @@ app.use((req, res, next) => {
 // Routes Middleware
 const apiVersion = 1;
 app.use(
-    `/api/v${apiVersion}/tours`,
+    `/api/v${apiVersion}/emails`,
     // cors(),
-    tourRouter
+    emailRouter
 );
 app.use(`/api/v${apiVersion}/users`, userRouter);
-app.use(`/api/v${apiVersion}/reviews`, reviewRouter);
-app.use(`/api/v${apiVersion}/bookings`, bookingRouter);
 app.use('/api', apiDocRouter);
 
-// app.all(`/api/*`, (req, res, next) => {
-//     next(new AppError(`The URL path ${req.originalUrl} was not found`, 404));
-// });
-
-// app.use('/', viewRouter);
 app.all(`/*`, (req, res, next) => {
     next(new AppError(`The URL path ${req.originalUrl} was not found`, 404));
 });

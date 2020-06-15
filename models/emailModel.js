@@ -19,6 +19,16 @@ const emailSchema = new mongoose.Schema({
     from: {
         type: String
     },
+    fromUser: {
+        type: String,
+        default: ''
+    },
+    toUser: [
+        {
+            type: String,
+            default: ''
+        }
+    ],
     text: {
         type: String
     },
@@ -49,7 +59,34 @@ const emailSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now()
+    },
+    read: {
+        type: Boolean,
+        default: false
+    },
+    archived: {
+        type: Boolean,
+        default: false
+    },
+    deleted: {
+        type: Boolean,
+        default: false
     }
+});
+
+emailSchema.pre('save', function(next) {
+    try {
+        if (this.envelope) {
+            const env = JSON.parse(this.envelope);
+            this.fromUser = env.from.substring(0, env.from.indexOf('@'));
+            this.toUser = env.to.map(ad => {
+                return ad.substring(0, ad.indexOf('@'));
+            });
+        }
+        // eslint-disable-next-line no-empty
+    } catch {}
+
+    next();
 });
 
 // THE FIRST ARGUMENT IS THE NAME THAT GOES IN THE REF

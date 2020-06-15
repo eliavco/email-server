@@ -71,6 +71,13 @@ const userSchema = new mongoose.Schema({
         default: true,
         select: false
     },
+    subscriptions: [
+        {
+            type: String,
+            minLength: [1, "Can't be empty"],
+            unique: true
+        }
+    ],
     passwordChangedAt: Date,
     passwordResetToken: String,
     passwordResetExpiration: Date
@@ -82,6 +89,15 @@ userSchema.pre('save', async function(next) {
     this.backupEmail = this.email;
     this.password = await bcrypt.hash(this.password, 12);
     this.passwordConfirm = undefined;
+    next();
+});
+
+userSchema.pre('save', async function(next) {
+    if (!this.isModified('subscriptions')) return next();
+
+    this.subscriptions = [...new Set(this.subscriptions)];
+    this.subscriptions = this.subscriptions.filter(val => val != null);
+
     next();
 });
 

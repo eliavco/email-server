@@ -1,9 +1,9 @@
 const fs = require('fs');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-const Tour = require('./../../models/tourModel');
+// const Tour = require('./../../models/tourModel');
 const User = require('./../../models/userModel');
-const Review = require('./../../models/reviewModel');
+// const Review = require('./../../models/reviewModel');
 
 dotenv.config({ path: './config.env' });
 // console.log(process.env);
@@ -27,22 +27,22 @@ mongoose
         // console.log('DB connected');
     });
 
-const tours = JSON.parse(
-    fs.readFileSync(`${__dirname}/tours.json`, 'utf-8')
-    // fs.readFileSync(`${__dirname}/tours-simple.json`, 'utf-8')
-);
+// const tours = JSON.parse(
+//     fs.readFileSync(`${__dirname}/tours.json`, 'utf-8')
+//     // fs.readFileSync(`${__dirname}/tours-simple.json`, 'utf-8')
+// );
 const users = JSON.parse(
     fs.readFileSync(`${__dirname}/users-to-import.json`, 'utf-8')
 );
-const reviews = JSON.parse(
-    fs.readFileSync(`${__dirname}/reviews-to-import.json`, 'utf-8')
-);
+// const reviews = JSON.parse(
+//     fs.readFileSync(`${__dirname}/reviews-to-import.json`, 'utf-8')
+// );
 
 const importData = async () => {
     try {
-        await Tour.create(tours);
+        // await Tour.create(tours);
         await User.create(users);
-        await Review.create(reviews);
+        // await Review.create(reviews);
         // eslint-disable-next-line no-console
         console.log('Data successfully loaded');
     } catch (error) {
@@ -53,12 +53,12 @@ const importData = async () => {
 };
 const delNImpoetData = async () => {
     try {
-        await Tour.deleteMany();
+        // await Tour.deleteMany();
         await User.deleteMany();
-        await Review.deleteMany();
-        await Tour.create(tours);
+        // await Review.deleteMany();
+        // await Tour.create(tours);
         await User.create(users);
-        await Review.create(reviews);
+        // await Review.create(reviews);
         // eslint-disable-next-line no-console
         console.log('Data successfully deleted and loaded loaded');
     } catch (error) {
@@ -69,9 +69,9 @@ const delNImpoetData = async () => {
 };
 const deleteData = async () => {
     try {
-        await Tour.deleteMany();
+        // await Tour.deleteMany();
         await User.deleteMany();
-        await Review.deleteMany();
+        // await Review.deleteMany();
         // eslint-disable-next-line no-console
         console.log('Data successfully deleted');
     } catch (error) {

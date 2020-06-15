@@ -1,9 +1,10 @@
 class APIFeatures {
-    constructor(query, body, queryString, model) {
+    constructor(query, body, queryString, users, model) {
         this.query = query;
         this.body = body;
         this.queryString = queryString;
         this.model = model;
+        this.users = users;
     }
 
     filter() {
@@ -58,6 +59,14 @@ class APIFeatures {
         //     const numTours = await Tour.countDocuments();
         //     if (skip >= numTours) throw new Error('This Page Does Not Exist!');
         // }
+        return this;
+    }
+
+    onlySubscribed() {
+        if (!this.users) return this;
+        this.users.forEach(user => {
+            this.query = this.query.find({ toUser: user });
+        });
         return this;
     }
 }

@@ -139,6 +139,19 @@ exports.deleteUserF = catchAsync(async (req, res, next) => {
     next();
 });
 
+exports.addSubscription = catchAsync(async (req, res, next) => {
+    const doc = await User.findById(req.currentUser._id);
+    if (!req.query.alias) return next(new AppError('No alias specified', 400));
+    if ((await User.find({ subscriptions: req.query.alias }))[0])
+        return next(new AppError('Someone already has this alias', 400));
+    await doc.subscriptions.push(req.query.alias);
+    const upDoc = await doc.save();
+    res.status(200).json({
+        status: 'success',
+        currentUser: upDoc
+    });
+});
+
 exports.deleteUserS = factory.deleteOne('user');
 
 exports.getStats = factory.getStats(User);
