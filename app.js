@@ -7,7 +7,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
 const multer = require('multer');
-const shortid = require('shortid');
+// const shortid = require('shortid');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
@@ -77,20 +77,20 @@ const limiter = rateLimit({
 // Limit requests from IP
 app.use('/api', limiter);
 
-const storage = multer.diskStorage({
-    destination: function(req, file, cb) {
-        cb(null, `${__dirname}/public/uploads`);
-    },
-    filename: function(req, file, cb) {
-        cb(null, `${shortid.generate()}-${Date.now()}-${file.originalname}`); //Appending .jpg
-    }
-});
+// const storage = multer.diskStorage({
+//     destination: function(req, file, cb) {
+//         cb(null, `${__dirname}/public/uploads`);
+//     },
+//     filename: function(req, file, cb) {
+//         cb(null, `${shortid.generate()}-${Date.now()}-${file.originalname}`); //Appending .jpg
+//     }
+// });
 const mstorage = multer.memoryStorage();
 
 // HAS to be before JSON parsing
 app.post(
     '/submit',
-    multer({ storage }).any(),
+    multer({ mstorage }).any(),
     // express.raw({ type: 'multipart/form-data' }),
     emailController.incomingEmail
 );
