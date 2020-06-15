@@ -64,9 +64,14 @@ class APIFeatures {
 
     onlySubscribed() {
         if (!this.users) return this;
-        this.users.forEach(user => {
-            this.query = this.query.find({ toUser: user });
+        if (!this.users[0]) {
+            this.query = this.query.find({ toUser: '@', exists: false });
+            return this;
+        }
+        const users = this.users.map(user => {
+            return { toUser: user };
         });
+        this.query = this.query.find({ $or: users });
         return this;
     }
 }
