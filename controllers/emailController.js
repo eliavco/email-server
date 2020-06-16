@@ -1,5 +1,6 @@
 const fs = require('fs');
 const shortid = require('shortid');
+const fetch = require('node-fetch');
 
 const { Storage } = require('@google-cloud/storage');
 const Email = require('./../models/emailModel');
@@ -7,6 +8,20 @@ const Email = require('./../models/emailModel');
 const catchAsync = require('./../utils/catchAsync');
 const EmailCustom = require('./../utils/emailCustom');
 const generateCredentials = require('./../utils/generateCredentials');
+
+exports.getFile = catchAsync(async (req, res, next) => {
+    const { url } = req.query;
+    const file = await fetch(url);
+    const { downloadTokens } = await file.json();
+    const fileFinal = await fetch(`${url}?alt=media&token=${downloadTokens}`);
+    const bufFileFinal = await fileFinal.buffer();
+    const { headers } = fileFinal;
+    const finalHeaders = [];
+    Object.keys(headers.raw()).forEach(key => {
+        finalHeaders.push([key, headers.raw()[key][0]]);
+    });
+    res.writeHead(200, finalHeaders).end(bufFileFinal);
+});
 
 const uploadFile = async (filename, buf, bucket, mime) => {
     return new Promise((resolve, reject) => {
@@ -23,7 +38,7 @@ const uploadFile = async (filename, buf, bucket, mime) => {
             // Assemble the file public URL
             const publicUrl = `https://firebasestorage.googleapis.com/v0/b/${
                 bucket.name
-            }/o/${encodeURI(blob.name)}?alt=media`;
+            }/o/${encodeURI(blob.name)}`;
             // Return the file name and its public URL
             // for you to store in your own database
             resolve(publicUrl);
@@ -34,7 +49,8 @@ const uploadFile = async (filename, buf, bucket, mime) => {
 };
 
 const asyncForEach = async (arr, cb) => {
-    for (let index = 0; index < arr.length; index++) {
+    for (let index = 0; index < arr.length; index += 1) {
+        // eslint-disable-next-line no-await-in-loop
         await cb(arr[index], index, arr);
     }
 };
@@ -53,6 +69,10 @@ exports.incomingEmail = catchAsync(async (req, res, next) => {
         const pUrl = await uploadFile(name, file.buffer, bucket, file.mimetype);
         file.filename = name;
         file.url = pUrl;
+        file.paramUrl = encodeURIComponent(pUrl);
+        file.publicUrl = `${req.protocol}://${req.get(
+            'host'
+        )}/photo?url=${encodeURIComponent(pUrl)}`;
         delete file.buffer;
     });
 

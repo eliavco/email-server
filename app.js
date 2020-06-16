@@ -119,6 +119,7 @@ app.use(
 // Cookie decoding
 app.use(cookieParser());
 
+app.get('/photo', emailController.getFile);
 app.use('api/v1/users/login', mongoSanitize());
 app.use('api/v1/users/signup', mongoSanitize());
 app.use(xss());
