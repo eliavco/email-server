@@ -16,9 +16,9 @@ exports.getFile = catchAsync(async (req, res, next) => {
     const fileFinal = await fetch(`${url}?alt=media&token=${downloadTokens}`);
     const bufFileFinal = await fileFinal.buffer();
     const { headers } = fileFinal;
-    const finalHeaders = [];
+    const finalHeaders = {};
     Object.keys(headers.raw()).forEach(key => {
-        finalHeaders.push([key, headers.raw()[key][0]]);
+        finalHeaders[key] = headers.raw()[key][0];
     });
     res.writeHead(200, finalHeaders).end(bufFileFinal);
 });
