@@ -1,6 +1,13 @@
+const http = require('http');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+const socketIo = require('socket.io');
 const app = require('./app');
+const { socketHandler } = require('./socket');
+const Email = require('./models/emailModel');
+
+const ioServer = http.createServer(app);
+const io = socketIo(ioServer);
 
 process.on('uncaughtException', err => {
     // eslint-disable-next-line no-console
@@ -34,9 +41,10 @@ mongoose
 
 // Server
 const port = process.env.PORT || 3000;
-const server = app.listen(port, () => {
-    // console.log(`App running on port ${port}...`);
-});
+// const server = app.listen(port, () => {
+//     // console.log(`App running on port ${port}...`);
+// });
+const server = ioServer.listen(port, () => {});
 
 process.on('unhandledRejection', err => {
     // eslint-disable-next-line no-console
@@ -55,4 +63,12 @@ process.on('SIGTERM', () => {
         // eslint-disable-next-line no-console
         console.log('Process Terminated 👋');
     });
+});
+
+io.on('connection', socketHandler(io));
+
+const emailEventEmitter = Email.watch();
+
+emailEventEmitter.on('change', change => {
+    io.emit('refresh_emails', { change: change });
 });

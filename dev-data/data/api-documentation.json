@@ -5,9 +5,9 @@
 			"incomingMail": "incoming emails are POSTed by SendGrid.io inbound parse on a custom domain (eliavoc.com for example), the path to process emails (multipart/form-data) is '/submit'",
 			"outgoingMail": "outgoing emails are POSTed by users, the path to process emails (multipart/form-data) is '/send'. The body should contain the following fields: [ from: email-address, name: full-sender-name-spaces-ok, to ?optional: comma-separated-recipients'-addresses, cc ?optional: same-as-to-but-for-copies, bcc ?optional: same-as-to-but-for-hidden-copies, subject: subject-of-mail, html: html-or-text-for-email-will-be-parsed-to-alt-text-too, headers ?optiomal: json-string-of-custom-key-value-headers-object, guide ?optional: json-string-of-custom-configuration-for-attachments.-array-with-objects-each-object-is-a-file.-object-has-field-name-of-uploaded-corresponding-file=('field').-if-embedded-should-have-unique-refrence=('ref').-if-it's-a-calendar-event-it-should-have-bool-equal-true=('calendar') ... and as much more fields as you want of files and text. ] Remember that if you want to embed images you should use 'cid:' as a prefix before the unique refrence in 'src' property in the image tag in html",
             "emails": {
-				"getAllYourEmailsStream": "To access all your emails send request to '/api/v1/emails' using GET method and open a streaming connection using socket.io server",
+				"refreshCue": "Listen to our server on the frontend using socket.io and get a cue 'refresh_emails' when a new email is in",
 				
-				"getAllYourEmails": "To access all your emails send request to '/api/v1/emails/e' using GET method",
+				"getAllYourEmails": "To access all your emails send request to '/api/v1/emails/e' or '/api/v1/emails/' using GET method",
 				
                 "getAllEmails": "To access all emails as admin send request to '/api/v1/emails/e/admin' using GET method",
                 "getById": "To access a certain tour by its ID, add the ID as a new slash '/api/v1/emails/:id' using GET method",

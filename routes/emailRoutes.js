@@ -4,16 +4,8 @@ const authController = require('../controllers/authController');
 
 const router = express.Router();
 
-router.param('id', (req, res, next, val) => {
-    // console.log(`This is the id: ${val}`);
-    next();
-});
-
-// router.param('id', emailAdminController.checkId);
 const { protect, restrict } = authController;
 // If login is required, add protect as first middleware
-
-// router.use('/:tourId', reviewRouter);
 
 router
     .route('/')
@@ -23,7 +15,7 @@ router
         emailAdminController.getAllEmailsAdmin
     )
     .post(
-        /*emailAdminController.checkBody,*/ protect,
+        protect,
         restrict('admin', 'lead-guide'),
         emailAdminController.createNewEmail
     );
