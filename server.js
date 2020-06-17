@@ -7,7 +7,7 @@ const { socketHandler } = require('./socket');
 const Email = require('./models/emailModel');
 
 const ioServer = http.createServer(app);
-const io = socketIo(ioServer);
+const io = socketIo(ioServer, { origins: '*:*' });
 
 process.on('uncaughtException', err => {
     // eslint-disable-next-line no-console
