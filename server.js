@@ -1,5 +1,5 @@
-const http =
-    process.env.NODE_ENV === 'development' ? require('http') : require('https');
+const fhttp = require('http');
+const fhttps = require('http');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const socketIo = require('socket.io');
@@ -7,6 +7,7 @@ const app = require('./app');
 const { socketHandler } = require('./socket');
 const Email = require('./models/emailModel');
 
+const http = process.env.NODE_ENV === 'development' ? fhttp : fhttps;
 const ioServer = http.createServer(app);
 const io = socketIo(ioServer, { origins: '*:*' });
 
