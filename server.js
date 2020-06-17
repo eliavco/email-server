@@ -1,4 +1,5 @@
-const http = require('https');
+const http =
+    process.env.NODE_ENV === 'development' ? require('http') : require('https');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const socketIo = require('socket.io');
