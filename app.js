@@ -14,54 +14,29 @@ const compression = require('compression');
 const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 const apiDocRouter = require('./routes/apiDocRoutes');
-// const rewriteDocs = require('./dev-data/data/import-dev-data-docs');
 const emailRouter = require('./routes/emailRoutes');
 const userRouter = require('./routes/userRoutes');
 const emailController = require('././controllers/emailController');
+const userController = require('././controllers/userController');
 const globalErrorHandler = require('./controllers/errorController');
 const AppError = require('./utils/appError');
+const { protect /*, restrict */ } = require('./controllers/authController');
 
 const app = express();
 app.enable('trust proxy');
 app.use(cors());
-// Access-Control-Allow-Origin *
-// api.natours.com frontend natours.com
-// app.use(
-//     cors({
-//         origin: 'https://www.natours.com'
-//     })
-// );
 
 // OPTIONS IS AN HTTP METHOD
 app.options('*', cors());
-// app.options('/api/v1/tours', cors());
-
-// app.set('view engine', 'html');
-// app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.static(`${__dirname}/public`));
-
-//         src: './public/css/sass/style.scss',
-//         dest: './public/css/style.css',
-
-// app.use(
-//     sassMiddleware({
-//         src: __dirname,
-//         dest: path.join(__dirname, 'public'),
-//         debug: process.env.NODE_ENV !== 'production',
-//         indentedSyntax: false,
-//         outputStyle: 'compressed',
-//         sourceMap: true
-//     })
-// );
 
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(helmet());
 if (process.env.NODE_ENV !== 'production') app.use(morgan('dev'));
 
-// rewriteDocs.rewriteData();
-
+const apiVersion = 1;
 const limiter = rateLimit({
     max: 100,
     windowMs: 60 * 60 * 1000,
@@ -74,32 +49,45 @@ const limiter = rateLimit({
     }
 });
 
-// Limit requests from IP
-app.use('/api', limiter);
-
-// const storage = multer.diskStorage({
-//     destination: function(req, file, cb) {
-//         cb(null, `${__dirname}/public/uploads`);
-//     },
-//     filename: function(req, file, cb) {
-//         cb(null, `${shortid.generate()}-${Date.now()}-${file.originalname}`); //Appending .jpg
-//     }
-// });
 const mstorage = multer.memoryStorage();
 
+app.patch(
+    `/api/v${apiVersion}/users/updateInfo`,
+    protect,
+    multer({
+        storage: mstorage,
+        fileFilter: (req, file, cb) => {
+            if (file.mimetype.startsWith('image')) {
+                cb(null, true);
+            } else {
+                cb(
+                    new AppError(
+                        'Not an image, please upload only images',
+                        400
+                    ),
+                    false
+                );
+            }
+        }
+    }).single('photo'),
+    userController.resizeUserPhoto
+);
 // HAS to be before JSON parsing
 app.post(
     '/submit',
-    multer({ mstorage }).any(),
+    multer({ storage: mstorage }).any(),
     // express.raw({ type: 'multipart/form-data' }),
     emailController.incomingEmail
 );
 app.post(
     '/send',
-    multer({ mstorage }).any(),
+    multer({ storage: mstorage }).any(),
     // express.raw({ type: 'multipart/form-data' }),
     emailController.outgoingEmail
 );
+
+// Limit requests from IP
+app.use('/api', limiter);
 
 // JSON DECODING
 app.use(
@@ -142,7 +130,6 @@ app.use((req, res, next) => {
 });
 
 // Routes Middleware
-const apiVersion = 1;
 app.use(
     `/api/v${apiVersion}/emails`,
     // cors(),

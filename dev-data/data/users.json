@@ -16,7 +16,6 @@
 		"subscriptions": [],
 		"role": "user",
 		"active": true,
-		"photo": "user-2.jpg",
 		"password": "eliav100",
 		"passwordConfirm": "eliav100"
 	},
@@ -27,7 +26,6 @@
 		"subscriptions": [],
 		"role": "user",
 		"active": true,
-		"photo": "user-3.jpg",
 		"password": "eliav100",
 		"passwordConfirm": "eliav100"
 	},
@@ -38,7 +36,6 @@
 		"subscriptions": [],
 		"role": "user",
 		"active": true,
-		"photo": "user-4.jpg",
 		"password": "eliav100",
 		"passwordConfirm": "eliav100"
 	},
@@ -49,7 +46,6 @@
 		"subscriptions": [],
 		"role": "guide",
 		"active": true,
-		"photo": "user-5.jpg",
 		"password": "eliav100",
 		"passwordConfirm": "eliav100"
 	},
@@ -60,7 +56,6 @@
 		"subscriptions": [],
 		"role": "guide",
 		"active": true,
-		"photo": "user-6.jpg",
 		"password": "eliav100",
 		"passwordConfirm": "eliav100"
 	},
@@ -71,7 +66,6 @@
 		"subscriptions": [],
 		"role": "guide",
 		"active": true,
-		"photo": "user-7.jpg",
 		"password": "eliav100",
 		"passwordConfirm": "eliav100"
 	},
@@ -82,7 +76,6 @@
 		"subscriptions": [],
 		"role": "user",
 		"active": true,
-		"photo": "user-8.jpg",
 		"password": "eliav100",
 		"passwordConfirm": "eliav100"
 	},
@@ -93,7 +86,6 @@
 		"subscriptions": [],
 		"role": "user",
 		"active": true,
-		"photo": "user-9.jpg",
 		"password": "eliav100",
 		"passwordConfirm": "eliav100"
 	},
@@ -104,7 +96,6 @@
 		"subscriptions": [],
 		"role": "lead-guide",
 		"active": true,
-		"photo": "user-10.jpg",
 		"password": "eliav100",
 		"passwordConfirm": "eliav100"
 	},
@@ -115,7 +106,6 @@
 		"subscriptions": [],
 		"role": "lead-guide",
 		"active": true,
-		"photo": "user-11.jpg",
 		"password": "eliav100",
 		"passwordConfirm": "eliav100"
 	},
@@ -126,7 +116,6 @@
 		"subscriptions": [],
 		"role": "lead-guide",
 		"active": true,
-		"photo": "user-12.jpg",
 		"password": "eliav100",
 		"passwordConfirm": "eliav100"
 	},
@@ -137,7 +126,6 @@
 		"subscriptions": [],
 		"role": "guide",
 		"active": true,
-		"photo": "user-13.jpg",
 		"password": "eliav100",
 		"passwordConfirm": "eliav100"
 	},
@@ -148,7 +136,6 @@
 		"subscriptions": [],
 		"role": "user",
 		"active": true,
-		"photo": "user-14.jpg",
 		"password": "eliav100",
 		"passwordConfirm": "eliav100"
 	},
@@ -159,7 +146,6 @@
 		"subscriptions": [],
 		"role": "user",
 		"active": true,
-		"photo": "user-15.jpg",
 		"password": "eliav100",
 		"passwordConfirm": "eliav100"
 	},
@@ -170,7 +156,6 @@
 		"subscriptions": [],
 		"role": "user",
 		"active": true,
-		"photo": "user-16.jpg",
 		"password": "eliav100",
 		"passwordConfirm": "eliav100"
 	},
@@ -181,7 +166,6 @@
 		"subscriptions": [],
 		"role": "user",
 		"active": true,
-		"photo": "user-17.jpg",
 		"password": "eliav100",
 		"passwordConfirm": "eliav100"
 	},
@@ -192,7 +176,6 @@
 		"subscriptions": [],
 		"role": "user",
 		"active": true,
-		"photo": "user-18.jpg",
 		"password": "eliav100",
 		"passwordConfirm": "eliav100"
 	},
@@ -203,7 +186,6 @@
 		"subscriptions": [],
 		"role": "user",
 		"active": true,
-		"photo": "user-19.jpg",
 		"password": "eliav100",
 		"passwordConfirm": "eliav100"
 	},
@@ -214,7 +196,6 @@
 		"subscriptions": [],
 		"role": "user",
 		"active": true,
-		"photo": "user-20.jpg",
 		"password": "eliav100",
 		"passwordConfirm": "eliav100"
 	},
@@ -225,7 +206,6 @@
 		"subscriptions": [],
 		"role": "lead-guide",
 		"active": true,
-		"photo": "user-21.jpg",
 		"password": "eliav100",
 		"passwordConfirm": "eliav100"
 	},
@@ -236,7 +216,6 @@
 		"subscriptions": [],
 		"role": "user",
 		"active": true,
-		"photo": "user-22.jpg",
 		"password": "eliav100",
 		"passwordConfirm": "eliav100"
 	}

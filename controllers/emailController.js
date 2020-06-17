@@ -47,6 +47,7 @@ const uploadFile = async (filename, buf, bucket, mime) => {
         blobStream.end(buf);
     });
 };
+exports.uploadHelper = uploadFile;
 
 const asyncForEach = async (arr, cb) => {
     for (let index = 0; index < arr.length; index += 1) {

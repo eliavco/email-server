@@ -1,53 +1,42 @@
-const multer = require('multer');
+const fs = require('fs');
+const shortid = require('shortid');
+const { Storage } = require('@google-cloud/storage');
+
 const sharp = require('sharp');
 const User = require('./../models/userModel');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
 const factory = require('./../controllers/factoryGenerator');
+const generateCredentials = require('./../utils/generateCredentials');
+const { uploadHelper } = require('./emailController');
 
-// const multerDest = (req, file, cb) => {
-//     // First paramter: error or null
-//     cb(null, 'public/img/users');
-// };
-
-// const multerFile = (req, file, cb) => {
-//     const ext = file.mimetype.split('/')[1];
-//     // user-id12-124738timestamp.jpg
-//     cb(null, `user-${req.currentUser.id}-${Date.now()}.${ext}`);
-// };
-
-const multerFilter = (req, file, cb) => {
-    if (file.mimetype.startsWith('image')) {
-        cb(null, true);
-    } else {
-        cb(new AppError('Not an image, please upload only images', 400), false);
-    }
-};
-
-const multerStorage = multer.memoryStorage();
-
-// const multerStorage = multer.diskStorage({
-//     destination: multerDest,
-//     filename: multerFile
-// });
-
-const upload = multer({
-    storage: multerStorage,
-    fileFilter: multerFilter
-});
-
-exports.uploadUserPhoto = upload.single('photo');
 exports.resizeUserPhoto = catchAsync(async (req, res, next) => {
     if (!req.file) return next();
 
-    req.file.filename = `user-${req.currentUser.id}-${Date.now()}.jpeg`;
-
-    await sharp(req.file.buffer)
+    const fileBuf = await sharp(req.file.buffer)
         .resize(500, 500)
         .toFormat('jpeg')
-        // 90 percent image quality
-        // .jpeg({ quality: 90 });
-        .toFile(`public/img/users/${req.file.filename}`);
+        .toBuffer();
+    const cred = generateCredentials(process);
+    const path = `${__dirname}/serviceAccount.json`;
+    fs.writeFileSync(path, JSON.stringify(cred));
+    const storage = new Storage({
+        projectId: process.env.GCLOUD_PROJECT_ID,
+        keyFilename: path
+    });
+    const bucket = storage.bucket(process.env.GCLOUD_STORAGE_BUCKET_URL);
+    const name = `user-${
+        req.currentUser.id
+    }-${shortid.generate()}-${Date.now()}-${req.file.originalname}`;
+    const pUrl = await uploadHelper(name, fileBuf, bucket, req.file.mimetype);
+
+    req.file.filename = name;
+    req.file.url = pUrl;
+    req.file.paramUrl = encodeURIComponent(pUrl);
+    req.file.publicUrl = `${req.protocol}://${req.get(
+        'host'
+    )}/photo?url=${encodeURIComponent(pUrl)}`;
+    delete req.file.buffer;
 
     next();
 });
@@ -65,7 +54,6 @@ exports.getAllUsers = factory.getAll(User);
 exports.getMe = factory.getMe;
 
 exports.updateMe = catchAsync(async (req, res, next) => {
-    // console.log(req.file);
     if (
         req.body.password ||
         req.body.passwordConfirm ||
@@ -81,7 +69,7 @@ exports.updateMe = catchAsync(async (req, res, next) => {
         );
 
     const filteredBody = filterObj(req.body, 'name', 'email', 'photo');
-    if (req.file) filteredBody.photo = req.file.filename;
+    if (req.file) filteredBody.photo = req.file.publicUrl;
     const updatedUser = await User.findByIdAndUpdate(
         req.currentUser.id,
         filteredBody,
