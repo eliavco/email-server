@@ -72,5 +72,7 @@ io.on('connection', socketHandler(io));
 const emailEventEmitter = Email.watch();
 
 emailEventEmitter.on('change', change => {
-    io.emit('refresh_emails', change.fullDocument.toUser);
+    if (change.fullDocument) {
+        io.emit('refresh_emails', change.fullDocument.toUser);
+    }
 });
