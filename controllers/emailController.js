@@ -77,22 +77,24 @@ exports.incomingEmail = catchAsync(async (req, res, next) => {
         delete file.buffer;
     });
 
-    req.body.files = JSON.stringify(req.files);
-    const cids = JSON.parse(req.body['content-ids']);
-    const filObj = {};
-    const filObj2 = {};
-    req.files.forEach(file => {
-        filObj[file.fieldname] = file.publicUrl;
-    });
-    Object.keys(cids).forEach(key => {
-        filObj2[`cid:${key}`] = filObj[cids[key]];
-    });
-    Object.keys(filObj2).forEach(key => {
-        req.body.html = req.body.html.replace(
-            new RegExp(key, 'g'),
-            filObj2[key]
-        );
-    });
+	req.body.files = JSON.stringify(req.files);
+	if (req.body['content-ids']) {
+		const cids = JSON.parse(req.body['content-ids']);
+		const filObj = {};
+		const filObj2 = {};
+		req.files.forEach(file => {
+			filObj[file.fieldname] = file.publicUrl;
+		});
+		Object.keys(cids).forEach(key => {
+			filObj2[`cid:${key}`] = filObj[cids[key]];
+		});
+		Object.keys(filObj2).forEach(key => {
+			req.body.html = req.body.html.replace(
+				new RegExp(key, 'g'),
+				filObj2[key]
+			);
+		});
+	}
 
     try {
         const doc = await Email.create(req.body);
