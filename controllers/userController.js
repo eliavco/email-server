@@ -85,6 +85,22 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     });
 });
 
+exports.removeProfilePhoto = catchAsync(async (req, res, next) => {
+    const updatedUser = await User.findByIdAndUpdate(
+        req.currentUser.id,
+        { photo: 'default' },
+        {
+            new: true,
+            runValidators: true
+        }
+    );
+
+    res.status(200).json({
+        status: 'success',
+        user: updatedUser
+    });
+});
+
 exports.deleteMe = catchAsync(async (req, res, next) => {
     await User.findByIdAndUpdate(req.currentUser.id, { active: false });
 
@@ -130,9 +146,22 @@ exports.deleteUserF = catchAsync(async (req, res, next) => {
 exports.addSubscription = catchAsync(async (req, res, next) => {
     const doc = await User.findById(req.currentUser._id);
     if (!req.query.alias) return next(new AppError('No alias specified', 400));
-    if ((await User.find({ subscriptions: req.query.alias }))[0])
-        return next(new AppError('Someone already has this alias', 400));
-    await doc.subscriptions.push(req.query.alias);
+    let action = 'add';
+    if (req.query.act) {
+        if (req.query.act === 'remove') {
+            action = 'remove';
+        }
+    }
+    if (action === 'add') {
+        if ((await User.find({ subscriptions: req.query.alias }))[0])
+            return next(new AppError('Someone already has this alias', 400));
+        await doc.subscriptions.push(req.query.alias);
+    } else {
+        const ind = doc.subscriptions.indexOf(req.query.alias);
+        if (ind >= 0) {
+            await doc.subscriptions.splice(ind, 1);
+        }
+    }
     const upDoc = await doc.save();
     res.status(200).json({
         status: 'success',

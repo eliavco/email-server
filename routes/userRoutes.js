@@ -15,6 +15,7 @@ router.get('/logout', authController.logout);
 router.patch('/updatePassword', protect, authController.updatePassword);
 
 router.patch('/updateInfo', protect, userController.updateMe);
+router.patch('/removeProfile', protect, userController.removeProfilePhoto);
 
 router.get('/me', protect, userController.getMe);
 router.delete('/deleteMe', protect, userController.deleteMe);

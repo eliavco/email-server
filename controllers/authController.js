@@ -47,9 +47,9 @@ exports.signup = catchAsync(async (req, res, next) => {
         name: newUser.name,
         email: newUser.email,
         role: newUser.role,
-	photo: newUser.photo,
-	subscriptions: newUser.subscriptions,
-	active: newUser.active,
+        photo: newUser.photo,
+        subscriptions: newUser.subscriptions,
+        active: newUser.active,
         password: '<ENCRYPTED>'
     };
 

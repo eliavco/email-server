@@ -37,6 +37,7 @@
                 "updatePassword": "Send a PATCH request to 'api/v1/users/updatePassword' with your email, oldPassword, newPassword and newPasswordConfirm and you will be automatically signed in and will get a new token",
                 
                 "updateInformationAboutYourself": "Send a PATCH request to 'api/v1/users/updateInfo' with your new information in the body. You can also upload a new 'photo' as form data or simply set photo to '' to remove your photo...",
+                "remove your image": "Send a PATCH request to 'api/v1/users/removeProfile'",
                 
                 "deleteYourAccount": "Send a DELETE request to 'api/v1/users/deleteMe'",
                 "restoreYourAcount": "Log In again",
@@ -61,7 +62,7 @@
                 "update": "To update a certain user send request to '/api/v1/users', specify the id in a new slash and use the PATCH method, send along a JSON object in body with new properties for object",
                 "delete": "To delete a certain user send request to '/api/v1/users', specify the id in a new slash and use the DELETE method",
 
-				"addAliasToAccount": "If you want to add an alias to an account, Patch to '/api/v1/users/sub' and add 'alias' field in the url query. If it doesn't belong to someone else already, all emails sent to this alias will be redirected to you",
+				"addOrRemoveAliasToAccount": "If you want to add an alias to an account, Patch to '/api/v1/users/sub' and add 'alias' field in the url query. If it doesn't belong to someone else already, all emails sent to this alias will be redirected to you. To remove an alias do the same but use act=remove in url query params",
 
                 "aggregate": "To access users statistics send request to '/api/v1/users/stats' using GET method, add your JSON aggregation array as a request.body.stages! For more information about aggregation object go to MongoDB and Mongoose documentations online."
             }
