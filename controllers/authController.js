@@ -53,7 +53,7 @@ exports.signup = catchAsync(async (req, res, next) => {
         password: '<ENCRYPTED>'
     };
 
-    const url = `${req.protocol}://${process.env.FRONT_END}/me`;
+    const url = `${req.protocol}://${process.env.FRONT_END}/account`;
     await new Email(newUser, url).sendWelcome();
     createSendToken(newUserSend, 201, req, res);
 });

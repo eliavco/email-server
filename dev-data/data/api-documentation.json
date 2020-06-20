@@ -33,7 +33,7 @@
                 "signup": "Send a POST request to '/api/v1/users/signup' with your name, valid email, a password, and passwordConfirm in the body of the request, your new user will be automatically signed in and will get a login token",
                 "login": "Send a POST request to '/api/v1/users/login' with your email and password in the body of the request, your user will be automatically signed in and will get a login token",
 
-                "forgotPassword": "Send a POST request to '/api/v1/users/forgotPassword' with your email in the body of the request, a reset token will be sent to your email, go check your email and follow the instructions. (send the url PATCH to the server, with a password and passwordConfirm and you will be signed in)",
+                "forgotPassword": "Send a POST request to '/api/v1/users/forgotPassword' with your email, and a reset url in the body of the request, a reset token will be attached to the given url and sent to your email (for example, 'https://blablabla.com/bla/bla/' + 'shsdsjlk26G'), go check your email and follow the instructions. (send the url 'api/v1/users/resetPassword/:token' PATCH to the server, with a password and passwordConfirm and you will be signed in)",
                 "updatePassword": "Send a PATCH request to 'api/v1/users/updatePassword' with your email, oldPassword, newPassword and newPasswordConfirm and you will be automatically signed in and will get a new token",
                 
                 "updateInformationAboutYourself": "Send a PATCH request to 'api/v1/users/updateInfo' with your new information in the body. You can also upload a new 'photo' as form data or simply set photo to '' to remove your photo...",
