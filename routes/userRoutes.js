@@ -38,9 +38,11 @@ router.route('/sub').patch(protect, userController.addSubscription);
 
 router
     .route('/:id')
-	.get(protect,
-		// restrict('admin', 'lead-guide'), // TODO: Temporary solution!
-		userController.getUser)
+    .get(
+        protect,
+        // restrict('admin', 'lead-guide'), // TODO: Temporary solution!
+        userController.getUser
+    )
     .patch(
         protect,
         restrict('admin'),
