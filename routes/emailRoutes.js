@@ -39,13 +39,13 @@ router
     .get(emailAdminController.getEmail)
     .patch(
         protect,
-        restrict('admin', 'lead-guide'),
+        // restrict('admin', 'lead-guide'),
         emailAdminController.updateEmailF,
         emailAdminController.updateEmailS
     )
     .delete(
         protect,
-        restrict('admin', 'lead-guide'),
+        // restrict('admin', 'lead-guide'),
         emailAdminController.deleteEmailF,
         emailAdminController.deleteEmailS
     );
